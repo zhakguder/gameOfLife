@@ -5,19 +5,26 @@ import { nCells, nRows, pattern } from "./config";
 const liveCells = [];
 
 switch (pattern) {
-  case "10 cell row":
+  case "10_cell_row":
     _.times(nRows / 10 + 1, rowIndex => {
       _.times(10, index => {
         liveCells.push(nCells * rowIndex * 10 + index + 2, true);
       });
     });
+
   case "glider":
-    _.times(nRows / 10 + 1, rowIndex => {
-      liveCells.push((rowIndex * 10 + 3) * nCells + nCells / 2, true);
-      liveCells.push((rowIndex * 10 + 4) * nCells + nCells / 2 + 1, true);
-      liveCells.push((rowIndex * 10 + 5) * nCells + nCells / 2 + 1, true);
-      liveCells.push((rowIndex * 10 + 5) * nCells + nCells / 2, true);
-      liveCells.push((rowIndex * 10 + 5) * nCells + nCells / 2 - 1, true);
+    const verticalSize = 20;
+    const horizontalSize = 20;
+    _.times(nCells / verticalSize + 1, rowIndex => {
+      _.times(nRows / verticalSize + 1, colIndex => {
+        const rowLocation = rowIndex * nCells * verticalSize;
+        const patternStart = colIndex * horizontalSize;
+        liveCells.push(patternStart + rowLocation, true);
+        liveCells.push(patternStart + nCells + rowLocation + 1, true);
+        liveCells.push(patternStart + nCells * 2 + rowLocation + 1, true);
+        liveCells.push(patternStart + nCells * 2 + rowLocation, true);
+        liveCells.push(patternStart + nCells * 2 + rowLocation - 1, true);
+      });
     });
 }
 

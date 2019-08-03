@@ -2,35 +2,43 @@ import React, { Component } from "react";
 import { sendLive } from "../actions";
 import { connect } from "react-redux";
 
-class Cell extends Component {
-  // if nLiveNeighbors ==2 and cell live, keep live,
-  // if nLiveNeigbors ==3 and cell dead, birth
+import { Rect } from "react-konva";
 
+class Cell extends Component {
   getColor = () => {
-    return this.props.isAlive ? "green" : "blue";
+    return this.props.isAlive ? "orange" : "blue";
   };
 
   onClick = () => {
-    console.log(this.props.id);
-    console.log(this.props.neighbors);
-    //this.setState({ isLive: !this.state.isLive });
-    //
-    this.props.sendLive(this.props.id);
+    return;
+    //    this.props.sendLive(this.props.id);
   };
 
   render() {
     return (
-      <div className={`${this.getColor()} column`} onClick={this.onClick}></div>
+      <Rect
+        x={this.props.x}
+        y={this.props.y}
+        width={10}
+        height={10}
+        fill={this.getColor()}
+        onClick={this.onClick}
+      />
+      //<div className={`${this.getColor()} column`} onClick={this.onClick}></div>
     );
   }
 }
 
+export default Cell;
+/*
 const mapStateToProps = (state, ownProps) => {
   // get from the gameboard array the neighbor situation
-  return { isAlive: state.game.lifeArray[ownProps.id], nAliveNeighbors: null };
+  return { isAlive: state.game.lifeArray[ownProps.id] };
 };
 
-export default connect(
+
+connect(
   mapStateToProps,
   { sendLive }
 )(Cell);
+*/

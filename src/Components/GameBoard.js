@@ -6,6 +6,7 @@ import Cell from "./Cell";
 import { nCells, nRows, timerInterval } from "../config";
 import { sendLive, sendAllLives } from "../actions";
 import liveCells from "../patterns";
+import { Stage, Layer } from "react-konva";
 
 class Board extends Component {
   state = { nCells: nCells, nRows: nRows };
@@ -24,10 +25,9 @@ class Board extends Component {
     const allCells = [];
     _.times(this.state.nRows, index => {
       allCells.push(
-        <div key={`row${index}`} className={`${this.state.nCells} column row`}>
-          {" "}
-          {this.getCells(index)}
-        </div>
+        //<div key={`row${index}`} className={`${this.state.nCells} column row`}>
+        <>{this.getCells(index)}</>
+        //</div>
       );
     });
     return _.flatten(allCells);
@@ -38,9 +38,11 @@ class Board extends Component {
       const thisIndex = startIndex * this.state.nCells + index;
       cells.push(
         <Cell
-          key={`cell ${thisIndex}`}
+          key={`cell ${index}`}
           id={thisIndex}
-          neighbors={this.getCellNeighbors(thisIndex)}
+          x={index * 10}
+          y={startIndex * 10}
+          isAlive={this.props.lifeArray[thisIndex]}
         />
       );
     });
@@ -118,9 +120,13 @@ class Board extends Component {
 
   render() {
     return (
+      <Stage width={this.state.nCells * 10} height={this.state.nRows * 10}>
+        <Layer>{this.getAllCells()}</Layer>
+      </Stage>
+      /*
       <div className="ui divided grid center aligned container">
         {this.getAllCells()}
-      </div>
+      </div>*/
     );
   }
 }
