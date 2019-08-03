@@ -3,7 +3,6 @@ import { sendLive } from "../actions";
 import { connect } from "react-redux";
 
 class Cell extends Component {
-  state = {};
   // if nLiveNeighbors ==2 and cell live, keep live,
   // if nLiveNeigbors ==3 and cell dead, birth
 
@@ -21,9 +20,7 @@ class Cell extends Component {
 
   render() {
     return (
-      <div className={`${this.getColor()} column`} onClick={this.onClick}>
-        Cell
-      </div>
+      <div className={`${this.getColor()} column`} onClick={this.onClick}></div>
     );
   }
 }

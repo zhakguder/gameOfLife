@@ -35,23 +35,30 @@ class Board extends Component {
   };
 
   getCellNeighbors = id => {
+    const { nCells, nRows } = this.state;
     const neighborArray = [
-      id - 11,
-      id - 10,
-      id - 9,
+      id - nCells - 1,
+      id - nCells,
+      id - nCells + 9,
       id - 1,
       id + 1,
-      id + 9,
-      id + 10,
-      id + 11
+      id + nCells - 1,
+      id + nCells,
+      id + nCells + 1
     ].filter(item => item > 0 && item < 99);
     if (id % 10 === 0) {
       return neighborArray.filter(
-        item => item !== id - 11 && item !== id - 1 && item !== id + 9
+        item =>
+          item !== id - nCells - 1 &&
+          item !== id - 1 &&
+          item !== id + nCells - 1
       );
     } else if (id % 10 === 9) {
       return neighborArray.filter(
-        item => item !== id - 9 && item !== id + 11 && item !== id + 1
+        item =>
+          item !== id - nCells + 1 &&
+          item !== id + 1 &&
+          item !== id + nCells + 1
       );
     } else {
       return neighborArray;
