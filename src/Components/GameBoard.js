@@ -3,15 +3,28 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 import Cell from "./Cell";
+import { nCells, nRows, timerInterval } from "../config";
+import { sendLive, sendAllLives } from "../actions";
+import liveCells from "../patterns";
 
 class Board extends Component {
-  state = { nCells: 10, nRows: 10 };
+  state = { nCells: nCells, nRows: nRows };
+  componentDidMount() {
+    const { nCells, nRows } = this.state;
+    liveCells.map(cell => {
+      this.props.sendLive(cell, true);
+    });
+    this.timerID = setInterval(() => this.getNextLives(), timerInterval);
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
+  }
 
   getAllCells = () => {
     const allCells = [];
     _.times(this.state.nRows, index => {
       allCells.push(
-        <div key={`row${index}`} className="ten column row">
+        <div key={`row${index}`} className={`${this.state.nCells} column row`}>
           {" "}
           {this.getCells(index)}
         </div>
@@ -39,31 +52,70 @@ class Board extends Component {
     const neighborArray = [
       id - nCells - 1,
       id - nCells,
-      id - nCells + 9,
+      id - nCells + 1,
       id - 1,
       id + 1,
       id + nCells - 1,
       id + nCells,
       id + nCells + 1
-    ].filter(item => item > 0 && item < 99);
-    if (id % 10 === 0) {
-      return neighborArray.filter(
+    ].filter(item => item > 0 && item < nCells * nRows - 2);
+    const result = neighborArray;
+    if (id % nCells === 0) {
+      const result = neighborArray.filter(
         item =>
           item !== id - nCells - 1 &&
           item !== id - 1 &&
           item !== id + nCells - 1
       );
-    } else if (id % 10 === 9) {
-      return neighborArray.filter(
+    } else if (id % nCells === 9) {
+      const result = neighborArray.filter(
         item =>
           item !== id - nCells + 1 &&
           item !== id + 1 &&
           item !== id + nCells + 1
       );
-    } else {
-      return neighborArray;
+    }
+    return result;
+  };
+
+  getnLiveNeighbors = id => {
+    const lifeArray = [...this.props.lifeArray];
+    const neighbors = this.getCellNeighbors(id);
+    const aliveNeighbors = [];
+    neighbors.map(neighbor => {
+      aliveNeighbors.push(lifeArray[neighbor]);
+    });
+    const nAliveNeighbors = aliveNeighbors.filter(x => x).length;
+    return nAliveNeighbors;
+  };
+
+  liveOrDie = (isAlive, nAliveNeighbors) => {
+    if (!isAlive) {
+      if (nAliveNeighbors === 3) {
+        return true;
+      } else {
+        return false;
+      }
+    } else if (isAlive) {
+      if (nAliveNeighbors < 2 || nAliveNeighbors > 3) {
+        return false;
+      } else {
+        return true;
+      }
     }
   };
+
+  getNextLives = () => {
+    const newLifeArray = [];
+    const { nRows, nCells } = this.state;
+    _.times(nRows * nCells, index => {
+      const isAlive = this.props.lifeArray[index];
+      const nAliveNeighbors = this.getnLiveNeighbors(index);
+      newLifeArray.push(this.liveOrDie(isAlive, nAliveNeighbors));
+    });
+    this.props.sendAllLives(newLifeArray);
+  };
+
   render() {
     return (
       <div className="ui divided grid center aligned container">
@@ -79,5 +131,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  {}
+  { sendAllLives, sendLive }
 )(Board);
