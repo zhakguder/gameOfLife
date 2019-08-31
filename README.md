@@ -2,7 +2,7 @@
 
 A bare-bones implementation of John Conway's _Game of Life_.
 
-![10 cell row](assets/10cells.gif?raw=true)
+![10 cell row](../assets/10cells.gif?raw=true)
 
 ### Installation
 
