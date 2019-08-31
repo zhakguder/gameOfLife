@@ -3,8 +3,8 @@
 A bare-bones implementation of John Conway's _Game of Life_.
 
 <p float="left">
-<img src="assets/10cells.gif" alt="10 cell row" width="150" height="150"/>
-<img src="assets/gliders.gif" alt="Gliders" width="150" height="150"/>
+<img src="../assets/10cells.gif" alt="10 cell row" width="150" height="150"/>
+<img src="../assets/gliders.gif" alt="Gliders" width="150" height="150"/>
 </p>
 ### Installation
 
