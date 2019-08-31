@@ -11,6 +11,7 @@ import { Stage, Layer } from "react-konva";
 class Board extends Component {
   state = { nCells: nCells, nRows: nRows };
   componentDidMount() {
+    console.log(timerInterval);
     const { nCells, nRows } = this.state;
     liveCells.map(cell => {
       this.props.sendLive(cell, true);
