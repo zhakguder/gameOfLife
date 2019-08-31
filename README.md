@@ -2,8 +2,10 @@
 
 A bare-bones implementation of John Conway's _Game of Life_.
 
-![10 cell row](../assets/10cells.gif?raw=true)
-
+<p float="left">
+<img src="assets/10cells.gif" alt="10 cell row" width="150" height="150"/>
+<img src="assets/gliders.gif" alt="Gliders" width="150" height="150"/>
+</p>
 ### Installation
 
 Fork or clone the repository. Go into the root folder and install dependencies:
